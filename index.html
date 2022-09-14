@@ -1,0 +1,155 @@
+<body onload="onPageLoad()">
+  <main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script>
+      var postSubmit = false;
+
+      const onSubmit = () => {
+        postSubmit = true;
+      };
+
+      const onIFrameLoad = () => {
+        if (postSubmit) {
+          $("#thank-you").removeClass("d-none");
+          $("#strike-card").addClass("d-none");
+        }
+      };
+
+      const onPageLoad = () => {
+        const search = window.location.search;
+        if (search.match(/hideCount/)) {
+          $("#count").addClass("d-none");
+        } else {
+          setCounts();
+        }
+
+        if (search.match(/hideStrikeCard/)) {
+          $("#strike-card").addClass("d-none");
+        }
+
+        console.log("PARENT LOCATION", window.parent.location);
+        console.log("REFERRER", document.referrer);
+        console.log("FRAME EL", search.match(/source=(.*)/));
+        // document.forms[0].elements["entry.1105869991"] =
+        //   window.parent.location.url;
+      };
+
+      const setCounts = () => {
+        $.getJSON(
+          "https://sheets.googleapis.com/v4/spreadsheets/1UpBSnIo_7egx4EfSf7Vr5mKd4-O2ZlZ-iZF1P0kT3_I/values/A2?key=AIzaSyBMMBgUg_q89G4VfyUdQ-tVmAQAPpsxTqA",
+          function (data) {
+            const count = data.values[0][0];
+
+            $("#committed").text(count.toLocaleString());
+            $("#needed").text((11000000 - count).toLocaleString());
+          }
+        );
+      };
+    </script>
+    <style>
+      body {
+        font-family: Poppins;
+        background-color: black;
+      }
+      #count,
+      label,
+      h1 {
+        color: white;
+      }
+    </style>
+    <iframe
+      name="hidden-iframe"
+      style="display: none"
+      onload="onIFrameLoad()"
+    ></iframe>
+    <div class="container px-md-5">
+      <div id="thank-you" class="d-none">
+        <h1 class="text-center mt-3">Thank you!</h1>
+      </div>
+      <div id="count" class="row text-center my-5">
+        <div class="col">
+          <div id="committed" class="fs-2 fw-bold"></div>
+          committed
+        </div>
+        <div class="col">
+          <div id="needed" class="fs-2 fw-bold"></div>
+          needed
+        </div>
+      </div>
+      <div id="strike-card">
+        <h1 class="text-center mt-3">Strike Card</h1>
+        <form
+          action="https://docs.google.com/forms/u/4/d/e/1FAIpQLSc38MMpWkTDudg129S4jlEK6s3xDeLBb1ofV2rEAymRYK8bbA/formResponse"
+          method="post"
+          target="hidden-iframe"
+          onsubmit="onSubmit()"
+        >
+          <div class="form-group mb-3">
+            <label for="name">Name</label>
+            <input
+              class="form-control"
+              type="text"
+              id="name"
+              placeholder="First Last"
+              name="entry.862808934"
+              required
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input
+              class="form-control"
+              type="email"
+              id="email"
+              placeholder="email@domain.com"
+              name="entry.592194683"
+              required
+            />
+          </div>
+          <div class="row mb-3">
+            <div class="form-group col">
+              <label for="zip">Zip code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="zip"
+                placeholder="#####"
+                pattern="\d{5}"
+                name="entry.389708110"
+                required
+              />
+            </div>
+            <div class="form-group col">
+              <label for="phone">Phone number</label>
+              <input
+                class="form-control"
+                type="tel"
+                id="phone"
+                placeholder="###-###-####"
+                pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}"
+                name="entry.28568095"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="d-grid col-4 mx-auto">
+            <button type="submit" class="btn btn-lg btn-outline-light py-4">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
