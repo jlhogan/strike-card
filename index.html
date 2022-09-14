@@ -37,11 +37,8 @@
           $("#strike-card").addClass("d-none");
         }
 
-        console.log("PARENT LOCATION", window.parent.location);
-        console.log("REFERRER", document.referrer);
-        console.log("FRAME EL", search.match(/source=(.*)/));
-        // document.forms[0].elements["entry.1105869991"] =
-        //   window.parent.location.url;
+        document.forms["strike-card-form"].elements["entry.1105869991"].value =
+          document.referrer;
       };
 
       const setCounts = () => {
@@ -89,6 +86,7 @@
       <div id="strike-card">
         <h1 class="text-center mt-3">Strike Card</h1>
         <form
+          id="strike-card-form"
           action="https://docs.google.com/forms/u/4/d/e/1FAIpQLSc38MMpWkTDudg129S4jlEK6s3xDeLBb1ofV2rEAymRYK8bbA/formResponse"
           method="post"
           target="hidden-iframe"
@@ -141,6 +139,8 @@
                 required
               />
             </div>
+
+            <input class="d-none" name="entry.1105869991" />
           </div>
 
           <div class="d-grid col-4 mx-auto">
