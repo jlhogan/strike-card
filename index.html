@@ -40,17 +40,17 @@
 
       const onPageLoad = () => {
         const search = window.location.search;
-        if (search.match(/countOnly/)) {
-          // hide strike card if count only
-          $("#strike-card").addClass("d-none");
-        }
-
-        if (search.match(/strikeCardOnly/)) {
+        if (search.match(/strikeCardOnly/i)) {
           // hide count if strike card only
           $("#count").addClass("d-none");
         } else {
           // otherwise, set values
           setCounts();
+        }
+
+        if (search.match(/countOnly/i)) {
+          // hide strike card if count only
+          $("#strike-card").addClass("d-none");
         }
 
         document.forms["strike-card-form"].elements["entry.1105869991"].value =
