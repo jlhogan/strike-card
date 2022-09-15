@@ -1,5 +1,5 @@
-<body onload="onPageLoad()">
-  <main>
+<html>
+  <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link
       href="https://fonts.googleapis.com/css?family=Poppins"
@@ -15,6 +15,7 @@
       var postSubmit = false;
 
       const onSubmit = () => {
+        // set variable which is used to show post-submit content and hide form
         postSubmit = true;
       };
 
@@ -22,19 +23,34 @@
         if (postSubmit) {
           $("#thank-you").removeClass("d-none");
           $("#strike-card").addClass("d-none");
+
+          // update committed and needed counts to reflect user's sign up
+          $("#committed").text(
+            (
+              parseInt($("#committed").text().replaceAll(",", "")) + 1
+            ).toLocaleString()
+          );
+          $("#needed").text(
+            (
+              parseInt($("#needed").text().replaceAll(",", "")) - 1
+            ).toLocaleString()
+          );
         }
       };
 
       const onPageLoad = () => {
         const search = window.location.search;
-        if (search.match(/hideCount/)) {
-          $("#count").addClass("d-none");
-        } else {
-          setCounts();
+        if (search.match(/countOnly/)) {
+          // hide strike card if count only
+          $("#strike-card").addClass("d-none");
         }
 
-        if (search.match(/hideStrikeCard/)) {
-          $("#strike-card").addClass("d-none");
+        if (search.match(/strikeCardOnly/)) {
+          // hide count if strike card only
+          $("#count").addClass("d-none");
+        } else {
+          // otherwise, set values
+          setCounts();
         }
 
         document.forms["strike-card-form"].elements["entry.1105869991"].value =
@@ -43,7 +59,7 @@
 
       const setCounts = () => {
         $.getJSON(
-          "https://sheets.googleapis.com/v4/spreadsheets/1UpBSnIo_7egx4EfSf7Vr5mKd4-O2ZlZ-iZF1P0kT3_I/values/A2?key=AIzaSyBMMBgUg_q89G4VfyUdQ-tVmAQAPpsxTqA",
+          "https://sheets.googleapis.com/v4/spreadsheets/1mYyT88hdRmohPcTIRyIyBELe1PuAqCiMvpH5I_Hqslk/values/A2?key=AIzaSyBMMBgUg_q89G4VfyUdQ-tVmAQAPpsxTqA",
           function (data) {
             const count = data.values[0][0];
 
@@ -58,98 +74,134 @@
         font-family: Poppins;
         background-color: black;
       }
-      #count,
-      label,
-      h1 {
-        color: white;
-      }
     </style>
-    <iframe
-      name="hidden-iframe"
-      style="display: none"
-      onload="onIFrameLoad()"
-    ></iframe>
-    <div class="container px-md-5">
-      <div id="thank-you" class="d-none">
-        <h1 class="text-center mt-3">Thank you!</h1>
-      </div>
-      <div id="count" class="row text-center my-5">
-        <div class="col">
-          <div id="committed" class="fs-2 fw-bold"></div>
-          committed
-        </div>
-        <div class="col">
-          <div id="needed" class="fs-2 fw-bold"></div>
-          needed
-        </div>
-      </div>
-      <div id="strike-card">
-        <h1 class="text-center mt-3">Strike Card</h1>
-        <form
-          id="strike-card-form"
-          action="https://docs.google.com/forms/u/4/d/e/1FAIpQLSc38MMpWkTDudg129S4jlEK6s3xDeLBb1ofV2rEAymRYK8bbA/formResponse"
-          method="post"
-          target="hidden-iframe"
-          onsubmit="onSubmit()"
+  </head>
+  <body onload="onPageLoad()">
+    <main>
+      <iframe
+        name="hidden-iframe"
+        style="display: none"
+        onload="onIFrameLoad()"
+      ></iframe>
+      <div class="container text-white px-md-5 mt-5">
+        <div
+          id="count"
+          class="row text-center mb-5 py-4 border border-white border-3"
         >
-          <div class="form-group mb-3">
-            <label for="name">Name</label>
-            <input
-              class="form-control"
-              type="text"
-              id="name"
-              placeholder="First Last"
-              name="entry.862808934"
-              required
-            />
+          <div class="col">
+            <div id="committed" class="fs-2 fw-bold"></div>
+            committed
           </div>
-          <div class="form-group mb-3">
-            <label for="email">Email</label>
-            <input
-              class="form-control"
-              type="email"
-              id="email"
-              placeholder="email@domain.com"
-              name="entry.592194683"
-              required
-            />
+          <div class="col">
+            <div id="needed" class="fs-2 fw-bold"></div>
+            needed
           </div>
-          <div class="row mb-3">
-            <div class="form-group col">
-              <label for="zip">Zip code</label>
+        </div>
+        <div id="thank-you" class="d-none text-center fs-5">
+          You are committed the General Strike.
+
+          <h1 class="text-center my-4">Welcome!</h1>
+
+          We will Strike when we have 11 million strike commits.
+          <br />
+          <br />
+          How quickly we get there is up to all of us…
+          <br />
+          <br />
+          <span class="fs-3"
+            >What can you do today to get five people to commit to
+            striking?</span
+          >
+          <br />
+          1. Talk to people in your life and get them to sign their own Strike
+          Cards.
+          <br />
+          2. Follow & share the Instagram to spread the work and see updates
+
+          <br />
+          <br />
+          <span class="fs-1">See you at The Strike!</span>
+        </div>
+        <div id="strike-card">
+          <h1 class="text-center mt-3">Strike Card</h1>
+          <p class="text-center fs-5 mt-5">
+            Signing a Strike Card is one of most important steps you can take in
+            ensuring the success of The Strike. You are committing to The Strike
+            and will get important email updates.
+            <br />
+            <br />
+            <span class="fs-6">
+              The General Strike is an 100% grassroots organization and your
+              data will never be shared or sold.
+            </span>
+          </p>
+          <form
+            id="strike-card-form"
+            action="https://docs.google.com/forms/u/4/d/e/1FAIpQLSc38MMpWkTDudg129S4jlEK6s3xDeLBb1ofV2rEAymRYK8bbA/formResponse"
+            method="post"
+            target="hidden-iframe"
+            onsubmit="onSubmit()"
+            class="mt-5"
+          >
+            <div class="form-group mb-3">
+              <label for="name">Name</label>
               <input
                 class="form-control"
                 type="text"
-                id="zip"
-                placeholder="#####"
-                pattern="\d{5}"
-                name="entry.389708110"
+                id="name"
+                placeholder="First Last"
+                name="entry.862808934"
                 required
               />
             </div>
-            <div class="form-group col">
-              <label for="phone">Phone number</label>
+            <div class="form-group mb-3">
+              <label for="email">Email</label>
               <input
                 class="form-control"
-                type="tel"
-                id="phone"
-                placeholder="###-###-####"
-                pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}"
-                name="entry.28568095"
+                type="email"
+                id="email"
+                placeholder="email@domain.com"
+                name="entry.592194683"
                 required
               />
             </div>
+            <div class="row mb-5">
+              <div class="form-group col">
+                <label for="zip">Zip code</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="zip"
+                  placeholder="#####"
+                  pattern="\d{5}"
+                  name="entry.28568095"
+                  required
+                />
+              </div>
+              <div class="form-group col">
+                <label for="phone">Phone number</label>
+                <input
+                  class="form-control"
+                  type="tel"
+                  id="phone"
+                  placeholder="###-###-####"
+                  pattern="[0-9]?\-?\(?[0-9]{3}\)?\s?-?[0-9]{3}-?[0-9]{4}"
+                  name="entry.389708110"
+                  required
+                />
+              </div>
 
-            <input class="d-none" name="entry.1105869991" />
-          </div>
+              <input class="d-none" name="entry.1105869991" />
+            </div>
 
-          <div class="d-grid col-4 mx-auto">
-            <button type="submit" class="btn btn-lg btn-outline-light py-4">
-              Submit
-            </button>
-          </div>
-        </form>
+            <div class="d-grid col-4 mx-auto">
+              <button type="submit" class="btn btn-lg btn-outline-light py-4">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
-</body>
+    </main>
+  </body>
+</html>
