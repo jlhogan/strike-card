@@ -54,16 +54,9 @@
         }
 
         // If no referrer, check for "source" query param
-        console.log("referrer", document.referrer);
-        console.log(
-          "url search params",
-          new URLSearchParams(search).get("source")
-        );
         const source = !!document.referrer
           ? document.referrer
           : new URLSearchParams(search).get("source");
-        console.log("SEARCH", search);
-        console.log("SOURCE", source);
         document.forms["strike-card-form"].elements["entry.1105869991"].value =
           source;
       };
@@ -196,7 +189,7 @@
                   type="tel"
                   id="phone"
                   placeholder="###-###-####"
-                  pattern="[0-9]?\-?\(?[0-9]{3}\)?\s?-?[0-9]{3}-?[0-9]{4}"
+                  pattern="[0-9]?-?\(?[0-9]{3}\)?\s?-?[0-9]{3}-?[0-9]{4}"
                   name="entry.389708110"
                   required
                 />
