@@ -54,8 +54,15 @@
         }
 
         // If no referrer, check for "source" query param
+        console.log("referrer", document.referrer);
+        console.log(
+          "url search params",
+          new URLSearchParams(search).get("source")
+        );
         const source =
           document.referrer ?? new URLSearchParams(search).get("source");
+        console.log("SEARCH", search);
+        console.log("SOURCE", source);
         document.forms["strike-card-form"].elements["entry.1105869991"].value =
           source;
       };
