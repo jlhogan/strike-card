@@ -59,8 +59,9 @@
           "url search params",
           new URLSearchParams(search).get("source")
         );
-        const source =
-          document.referrer ?? new URLSearchParams(search).get("source");
+        const source = !!document.referrer
+          ? document.referrer
+          : new URLSearchParams(search).get("source");
         console.log("SEARCH", search);
         console.log("SOURCE", source);
         document.forms["strike-card-form"].elements["entry.1105869991"].value =
