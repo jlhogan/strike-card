@@ -53,12 +53,10 @@
           $("#strike-card").addClass("d-none");
         }
 
-        // If no referrer, check for "source" query param
-        const source = !!document.referrer
-          ? document.referrer
-          : new URLSearchParams(search).get("source");
+        // Use "source" query param if exists, otherwise use referrer as data source
+        const source = new URLSearchParams(search).get("source");
         document.forms["strike-card-form"].elements["entry.1105869991"].value =
-          source;
+          source || document.referrer;
       };
 
       const setCounts = () => {
