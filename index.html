@@ -14,10 +14,10 @@
     <script>
       var postSubmit = false;
 
-      const onSubmit = () => {
+      function recaptchaCallback() {
         // set variable which is used to show post-submit content and hide form
         postSubmit = true;
-      };
+      }
 
       const onIFrameLoad = () => {
         if (postSubmit) {
@@ -148,10 +148,9 @@
           </p>
           <form
             id="strike-card-form"
-            action="https://docs.google.com/forms/u/4/d/e/1FAIpQLSc38MMpWkTDudg129S4jlEK6s3xDeLBb1ofV2rEAymRYK8bbA/formResponse"
+            action="https://us-central1-focal-future-410701.cloudfunctions.net/function-1"
             method="post"
             target="hidden-iframe"
-            onsubmit="onSubmit()"
             class="mt-5"
           >
             <div class="form-group mb-3">
