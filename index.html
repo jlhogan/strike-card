@@ -1,6 +1,5 @@
 <html>
   <head>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link
       href="https://fonts.googleapis.com/css?family=Poppins"
@@ -17,7 +16,6 @@
 
       const onSubmit = () => {
         // set variable which is used to show post-submit content and hide form
-        document.getElementById("strike-card-form").submit();
         postSubmit = true;
       };
 
@@ -208,13 +206,7 @@
             </div>
 
             <div class="d-grid col-4 mx-auto">
-              <button
-                class="g-recaptcha"
-                data-sitekey="6LdJnUopAAAAADmyY3TWG2elaTnedjcQ4T6GKp5V"
-                data-callback="onSubmit"
-                data-action="submit"
-                class="btn btn-lg btn-outline-light py-4"
-              >
+              <button type="submit" class="btn btn-lg btn-outline-light py-4">
                 Submit
               </button>
             </div>
