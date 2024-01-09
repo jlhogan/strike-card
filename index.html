@@ -15,9 +15,9 @@
     <script>
       var postSubmit = false;
 
-      function recaptchaCallback() {
-        // set variable which is used to show post-submit content and hide form
-        postSubmit = true;
+      function recaptchaCallback(token) {
+        document.getElementById("g-recaptcha-response").value = token;
+        document.getElementById("strike-card-form").submit();
       }
 
       const onIFrameLoad = () => {
@@ -203,6 +203,11 @@
               </div>
 
               <input class="d-none" name="entry.1105869991" />
+              <input
+                class="d-none"
+                id="g-recaptcha-response"
+                name="g-recaptcha-response"
+              />
             </div>
 
             <div class="d-grid col-4 mx-auto">
