@@ -20,10 +20,22 @@
         postSubmit = true;
       }
 
+      const onSubmit = () => {
+        postSubmit = true;
+      };
+
+      const onPrivacyPolicyClick = () => {
+        window.location.hash = "#privacy-policy";
+        $("#thank-you").addClass("d-none");
+        $("#strike-card").addClass("d-none");
+        $("#count").addClass("d-none");
+        $("#privacy-policy").removeClass("d-none");
+      };
+
       const onIFrameLoad = () => {
         if (postSubmit) {
-          $("#thank-you").removeClass("d-none");
           $("#strike-card").addClass("d-none");
+          $("#thank-you").removeClass("d-none");
 
           // update committed and needed counts to reflect user's sign up
           $("#committed").text(
@@ -40,24 +52,46 @@
       };
 
       const onPageLoad = () => {
-        const search = window.location.search;
-        if (search.match(/strikeCardOnly/i)) {
-          // hide count if strike card only
-          $("#count").addClass("d-none");
-        } else {
-          // otherwise, set values
-          setCounts();
-        }
+        window.addEventListener("popstate", onPageLoad);
+        document
+          .getElementById("show-privacy-policy")
+          .addEventListener("click", onPrivacyPolicyClick);
+        document
+          .getElementById("strike-card-form")
+          .addEventListener("submit", onSubmit);
 
-        if (search.match(/countOnly/i)) {
-          // hide strike card if count only
-          $("#strike-card").addClass("d-none");
-        }
+        setCounts();
+        const hash = window.location.hash;
+        const search = window.location.search;
 
         // Use "source" query param if exists, otherwise use referrer as data source
         const source = new URLSearchParams(search).get("source");
         document.forms["strike-card-form"].elements["entry.1105869991"].value =
           source || document.referrer;
+
+        $("#privacy-policy").addClass("d-none");
+        $("#thank-you").addClass("d-none");
+        $("#strike-card").addClass("d-none");
+        $("#count").addClass("d-none");
+
+        if (hash.match(/privacy-policy/i)) {
+          $("#privacy-policy").removeClass("d-none");
+          return;
+        }
+
+        if (search.match(/strikeCardOnly/i)) {
+          $("#strike-card").removeClass("d-none");
+          return;
+        }
+
+        if (search.match(/countOnly/i)) {
+          $("#count").removeClass("d-none");
+          return;
+        }
+
+        // Base case show strike card and counts
+        $("#strike-card").removeClass("d-none");
+        $("#count").removeClass("d-none");
       };
 
       const setCounts = () => {
@@ -87,9 +121,142 @@
         onload="onIFrameLoad()"
       ></iframe>
       <div class="container text-white px-md-5 mt-5">
+        <div id="privacy-policy" class="d-none">
+          <h1 class="text-center">General Strike US Privacy Policy</h1>
+          <div class="text-center">
+            Last Updated: January 5, 2024
+            <br />
+            This Privacy Policy explains how we collect, use, disclose, and
+            protect your personal information as a subscriber to our newsletter
+            and recipient of SMS messaging.
+          </div>
+          <h2>Information We Collect</h2>
+          <ol>
+            <li>Email Address</li>
+            <li>First and Last Name</li>
+            <li>Phone Number</li>
+            <li>Zip Code</li>
+          </ol>
+
+          <h2>How We Use Your Information</h2>
+          <ol>
+            <li>
+              Newsletter Delivery:
+              <ul>
+                <li>
+                  We use your email address to deliver our newsletter to your
+                  inbox.
+                </li>
+              </ul>
+            </li>
+            <li>
+              Personalization:
+              <ul>
+                <li>
+                  We may use your name to personalize our communications with
+                  you.
+                </li>
+              </ul>
+            </li>
+            <li>
+              Analytics:
+              <ul>
+                <li>
+                  We may aggregate zip code data to provide insights about our
+                  user base.
+                </li>
+              </ul>
+            </li>
+            <li>
+              Strike Announcement:
+              <ul>
+                <li>
+                  We may use your email address and phone number to announce
+                  when we have reached our strike goal and provide further
+                  instructions.
+                </li>
+              </ul>
+            </li>
+          </ol>
+          <h2>Information Sharing</h2>
+          <ol>
+            <li>
+              Third-Party Service Providers:
+              <ul>
+                <li>
+                  We may use third-party email service providers to deliver our
+                  newsletter. These providers are bound by confidentiality
+                  agreements and are not allowed to use your information for any
+                  purpose other than delivering our newsletter.
+                </li>
+                <li>
+                  We use Peerly, a peer-to-peer texting application, to send you
+                  personalized SMS messages to your mobile device.
+                </li>
+              </ul>
+            </li>
+          </ol>
+
+          <h2>Your Choices</h2>
+          <ol>
+            <li>
+              Unsubscribe:
+              <ul>
+                <li>
+                  You can unsubscribe from our newsletter at any time by
+                  following the unsubscribe link that will be at the bottom of
+                  each newsletter. Please allow 7 days for the changes to take
+                  effect.
+                </li>
+                <li>
+                  You may unsubscribe from texts by replying STOP to quit.
+                </li>
+              </ul>
+            </li>
+            <li>
+              Opt-out
+              <ul>
+                <li>
+                  You can fully remove your data from our systems by emailing
+                  <a href="mailto:info@generalstrikeus.com"
+                    >info@generalstrikeus.com</a
+                  >
+                  with the subject line "Opt Out". Ensure that the contents of
+                  this email contain the email that you signed up with. Please
+                  allow 7 days for the changes to take effect. You will receive
+                  an email reply to confirm that you have been removed. Once
+                  opted out, you may opt back in at any time by re-submitting
+                  the strike card
+                </li>
+              </ul>
+            </li>
+          </ol>
+
+          <h2>Security</h2>
+          <div>
+            We take reasonable measures to protect your email address and any
+            optional information you provide. However, please be aware that no
+            method of transmission over the internet or electronic storage is
+            100% secure.
+          </div>
+
+          <h2 class="mt-3">Changes to this Privacy Policy</h2>
+          <div>
+            We may update our Privacy Policy from time to time. Any changes will
+            be effective upon posting the updated policy on our website.
+          </div>
+          <h2 class="mt-3">Contact Us</h2>
+          <div>
+            If you have any questions about this Privacy Policy or our
+            newsletter, please contact us at
+            <a href="mailto:info@generalstrikeus.com"
+              >info@generalstrikeus.com</a
+            >.
+          </div>
+        </div>
         <div
           id="count"
-          class="row text-center mb-5 py-4 border border-white border-3"
+          class="d-none row text-center mb-5 py-4 border border-white border-3"
         >
           <div class="col">
             <div id="committed" class="fs-2 fw-bold"></div>
@@ -132,7 +299,7 @@
           <br />
           <span class="fs-1">See you at The Strike!</span>
         </div>
-        <div id="strike-card">
+        <div id="strike-card" class="d-none">
           <h1 class="text-center mt-3">Strike Card</h1>
           <p class="text-center fs-5 mt-5">
             Signing a Strike Card is one of most important steps you can take in
@@ -145,13 +312,21 @@
             <span class="fs-6">
               The General Strike is an 100% grassroots organization and your
               data will never be shared or sold.
+              <br />
+              Check out our
+              <button
+                id="show-privacy-policy"
+                class="link-secondary text-decoration-underline p-0 border-0 bg-transparent"
+                href="#privacy-policy"
+              >
+                privacy policy</button
+              >.
             </span>
           </p>
           <form
             id="strike-card-form"
             action="https://us-central1-focal-future-410701.cloudfunctions.net/function-1"
             method="post"
-            onsubmit="onSubmit"
             target="hidden-iframe"
             class="mt-5"
           >
