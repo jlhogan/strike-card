@@ -24,14 +24,6 @@
         postSubmit = true;
       };
 
-      const onPrivacyPolicyClick = () => {
-        window.location.hash = "#privacy-policy";
-        $("#thank-you").addClass("d-none");
-        $("#strike-card").addClass("d-none");
-        $("#count").addClass("d-none");
-        $("#privacy-policy").removeClass("d-none");
-      };
-
       const onIFrameLoad = () => {
         if (postSubmit) {
           $("#strike-card").addClass("d-none");
@@ -52,32 +44,28 @@
       };
 
       const onPageLoad = () => {
+        // ensure page state is re-set on page reload
         window.addEventListener("popstate", onPageLoad);
-        document
-          .getElementById("show-privacy-policy")
-          .addEventListener("click", onPrivacyPolicyClick);
+
+        // Attach submit action to form submit event
         document
           .getElementById("strike-card-form")
           .addEventListener("submit", onSubmit);
 
+        // Set counts in display
         setCounts();
-        const hash = window.location.hash;
-        const search = window.location.search;
 
-        // Use "source" query param if exists, otherwise use referrer as data source
+        // Use "source" query param if exists for hidden form field,
+        // otherwise use referrer
         const source = new URLSearchParams(search).get("source");
         document.forms["strike-card-form"].elements["entry.1105869991"].value =
           source || document.referrer;
 
-        $("#privacy-policy").addClass("d-none");
+        // Display correct page elements based on QPs
+        const search = window.location.search;
         $("#thank-you").addClass("d-none");
         $("#strike-card").addClass("d-none");
         $("#count").addClass("d-none");
-
-        if (hash.match(/privacy-policy/i)) {
-          $("#privacy-policy").removeClass("d-none");
-          return;
-        }
 
         if (search.match(/strikeCardOnly/i)) {
           $("#strike-card").removeClass("d-none");
@@ -121,141 +109,6 @@
         onload="onIFrameLoad()"
       ></iframe>
       <div class="container text-white px-md-5 mt-5">
-        <div id="privacy-policy" class="d-none">
-          <h1 class="text-center">General Strike US Privacy Policy</h1>
-          <div class="text-center">
-            Last Updated: January 5, 2024
-            <br />
-            This Privacy Policy explains how we collect, use, disclose, and
-            protect your personal information as a subscriber to our newsletter
-            and recipient of SMS messaging.
-          </div>
-          <h2>Information We Collect</h2>
-          <ol>
-            <li>Email Address</li>
-            <li>First and Last Name</li>
-            <li>Phone Number</li>
-            <li>Zip Code</li>
-          </ol>
-
-          <h2>How We Use Your Information</h2>
-          <ol>
-            <li>
-              Newsletter Delivery:
-              <ul>
-                <li>
-                  We use your email address to deliver our newsletter to your
-                  inbox.
-                </li>
-              </ul>
-            </li>
-            <li>
-              Personalization:
-              <ul>
-                <li>
-                  We may use your name to personalize our communications with
-                  you.
-                </li>
-              </ul>
-            </li>
-            <li>
-              Analytics:
-              <ul>
-                <li>
-                  We may aggregate zip code data to provide insights about our
-                  user base.
-                </li>
-              </ul>
-            </li>
-            <li>
-              Strike Announcement:
-              <ul>
-                <li>
-                  We may use your email address and phone number to announce
-                  when we have reached our strike goal and provide further
-                  instructions.
-                </li>
-              </ul>
-            </li>
-          </ol>
-          <h2>Information Sharing</h2>
-          <ol>
-            <li>
-              Third-Party Service Providers:
-              <ul>
-                <li>
-                  We may use third-party email service providers to deliver our
-                  newsletter. These providers are bound by confidentiality
-                  agreements and are not allowed to use your information for any
-                  purpose other than delivering our newsletter.
-                </li>
-                <li>
-                  We use Peerly, a peer-to-peer texting application, to send you
-                  personalized SMS messages to your mobile device.
-                </li>
-              </ul>
-            </li>
-          </ol>
-
-          <h2>Your Choices</h2>
-          <ol>
-            <li>
-              Unsubscribe:
-              <ul>
-                <li>
-                  You can unsubscribe from our newsletter at any time by
-                  following the unsubscribe link that will be at the bottom of
-                  each newsletter. Please allow 7 days for the changes to take
-                  effect.
-                </li>
-                <li>
-                  You may unsubscribe from texts by replying STOP to quit.
-                </li>
-              </ul>
-            </li>
-            <li>
-              Opt-out
-              <ul>
-                <li>
-                  You can fully remove your data from our systems by emailing
-                  <a
-                    class="link-secondary"
-                    href="mailto:info@generalstrikeus.com"
-                    >info@generalstrikeus.com</a
-                  >
-                  with the subject line "Opt Out". Ensure that the contents of
-                  this email contain the email that you signed up with. Please
-                  allow 7 days for the changes to take effect. You will receive
-                  an email reply to confirm that you have been removed. Once
-                  opted out, you may opt back in at any time by re-submitting
-                  the strike card
-                </li>
-              </ul>
-            </li>
-          </ol>
-
-          <h2>Security</h2>
-          <div>
-            We take reasonable measures to protect your email address and any
-            optional information you provide. However, please be aware that no
-            method of transmission over the internet or electronic storage is
-            100% secure.
-          </div>
-
-          <h2 class="mt-3">Changes to this Privacy Policy</h2>
-          <div>
-            We may update our Privacy Policy from time to time. Any changes will
-            be effective upon posting the updated policy on our website.
-          </div>
-          <h2 class="mt-3">Contact Us</h2>
-          <div>
-            If you have any questions about this Privacy Policy or our
-            newsletter, please contact us at
-            <a class="link-secondary" href="mailto:info@generalstrikeus.com"
-              >info@generalstrikeus.com</a
-            >.
-          </div>
-        </div>
         <div
           id="count"
           class="d-none row text-center mb-5 py-4 border border-white border-3"
@@ -315,14 +168,22 @@
               The General Strike is an 100% grassroots organization and your
               data will never be shared or sold.
               <br />
-              Check out our
-              <button
+              <br />
+              By providing your telephone number and email, you consent to
+              receive calls and text messages.
+              <br />
+              Msg & data rates may apply. Msg frequency may vary. Reply “STOP”
+              to opt-out & “HELP” for help.
+              <br />
+              View our
+              <a
                 id="show-privacy-policy"
                 class="link-secondary text-decoration-underline p-0 border-0 bg-transparent"
-                href="#privacy-policy"
+                href="privacy_policy.html"
               >
-                privacy policy</button
-              >.
+                privacy policy
+              </a>
+              for more info.
             </span>
           </p>
           <form
