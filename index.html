@@ -55,6 +55,8 @@
         // Set counts in display
         setCounts();
 
+        const search = window.location.search;
+
         // Use "source" query param if exists for hidden form field,
         // otherwise use referrer
         const source = new URLSearchParams(search).get("source");
@@ -62,7 +64,6 @@
           source || document.referrer;
 
         // Display correct page elements based on QPs
-        const search = window.location.search;
         $("#thank-you").addClass("d-none");
         $("#strike-card").addClass("d-none");
         $("#count").addClass("d-none");
