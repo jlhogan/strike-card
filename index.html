@@ -16,6 +16,23 @@
       var postSubmit = false;
 
       function recaptchaCallback(token) {
+        // check that required fields are filled out before submitting
+        if (!document.getElementById("name").checkValidity()) {
+          document.getElementById("name").classList.add("is-invalid");
+          return;
+        }
+        if (!document.getElementById("email").checkValidity()) {
+          document.getElementById("email").classList.add("is-invalid");
+          return;
+        }
+        if (!document.getElementById("zip").checkValidity()) {
+          document.getElementById("zip").classList.add("is-invalid");
+          return;
+        }
+        if (!document.getElementById("phone").checkValidity()) {
+          document.getElementById("phone").classList.add("is-invalid");
+          return;
+        }
         document.getElementById("strike-card-form").submit();
         postSubmit = true;
       }
