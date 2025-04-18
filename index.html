@@ -15,6 +15,8 @@
     <script>
       var postSubmit = false;
 
+      const apiKey = "AIzaSyBMMBgUg_q89G4VfyUdQ-tVmAQAPpsxTqA";
+
       function recaptchaCallback(token) {
         // check that required fields are filled out before submitting
         let valid = true;
@@ -85,7 +87,7 @@
 
         // Set counts in display
         setCounts();
-
+        getLocalChapters();
         const search = window.location.search;
 
         // Use "source" query param if exists for hidden form field,
@@ -116,12 +118,30 @@
 
       const setCounts = () => {
         $.getJSON(
-          "https://sheets.googleapis.com/v4/spreadsheets/1mYyT88hdRmohPcTIRyIyBELe1PuAqCiMvpH5I_Hqslk/values/A2?key=AIzaSyBMMBgUg_q89G4VfyUdQ-tVmAQAPpsxTqA",
+          `https://sheets.googleapis.com/v4/spreadsheets/1mYyT88hdRmohPcTIRyIyBELe1PuAqCiMvpH5I_Hqslk/values/A2?key=${apiKey}`,
           function (data) {
             const count = data.values[0][0];
 
             $("#committed").text((count * 1).toLocaleString());
             $("#needed").text((11000000 - count).toLocaleString());
+          }
+        );
+      };
+
+      const getLocalChapters = () => {
+        $.getJSON(
+          `https://sheets.googleapis.com/v4/spreadsheets/1we5ZNmYMjTFPISA0zLL4SuoVs_R5-_M-zBwLdtUcpF4/values/Sheet1!A:B?key=${apiKey}`,
+          function (data) {
+            const chaptersData = data.values.slice(1);
+            for (const chapter of chaptersData) {
+              const [name, discord] = chapter;
+              if (!discord) {
+                continue;
+              }
+              $("#chapters").append(
+                `<li><a class="link-secondary" href="${discord}">${name}</a></li>`
+              );
+            }
           }
         );
       };
@@ -165,22 +185,11 @@
           How quickly we get there is up to all of us…
           <br />
           <br />
-          <span class="fs-3"
-            >What can you do today to get five people to commit to
-            striking?</span
-          >
-          <br />
-          1. Talk to people in your life and get them to sign their own Strike
-          Cards.
-          <br />
-          2.
-          <a
-            class="link-secondary"
-            href="https://www.instagram.com/thegeneralstrikeus/"
-            target="_blank"
-            >Follow & share the Instagram</a
-          >
-          to spread the work and see updates
+          <span class="fs-3">Join your local chapter to get organized</span>
+
+          <div class="mt-3 overflow-auto" style="max-height: 200px">
+            <ul id="chapters" class="list-unstyled text-start px-5 lh-lg"></ul>
+          </div>
 
           <br />
           <br />
